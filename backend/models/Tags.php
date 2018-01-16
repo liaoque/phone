@@ -68,4 +68,48 @@ class Tags extends \yii\db\ActiveRecord
     {
         return new TagsQuery(get_called_class());
     }
+
+    public static function createPath($id = 0)
+    {
+        $str = $id;
+        if (!$str) {
+            return $str;
+        }
+        $result = self::find()->where(['id' => $id])->one();
+        $str =self::createPath($result->getAttribute('pid')). '_' . $str;
+        return $str;
+    }
+
+    public static function parsePath($path, Tags $model = null)
+    {
+        static $list = [];
+        if(empty($list)){
+            $list = ArrayHelper::map(ArrayHelper::toArray(self::getTreeTags(new self())), 'id', 'name');
+        }
+
+        $pathList =explode('_', $path);
+//        var_dump($list, $pathList);exit();
+        $path = [];
+        foreach ($pathList as $value){
+            if(!$value){
+                continue;
+            }
+            $path[] =  $list[$value] ;
+        }
+        if($model){
+            $path[] = $model->getAttribute('name');
+        }
+        return implode('_', $path);
+    }
+
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+
+        $pid = $this->getAttribute('pid');
+        $path = self::createPath($pid);
+        $this->setAttribute('path', $path);
+        return parent::save();
+    }
+
 }

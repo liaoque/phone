@@ -25,11 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
-            'pid',
-            'path',
+            [
+                'attribute' =>  'path',
+                'content' => function($model, $key, $index){
+                    return \backend\models\Tags::parsePath($model->getAttribute('path'), $model);
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
