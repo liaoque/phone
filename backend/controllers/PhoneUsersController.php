@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class PhoneUsersController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -121,7 +122,6 @@ class PhoneUsersController extends Controller
         if (($model = PhoneUsers::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

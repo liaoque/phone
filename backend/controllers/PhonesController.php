@@ -8,6 +8,7 @@ use backend\models\PhonesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PhonesController implements the CRUD actions for Phones model.
@@ -16,10 +17,10 @@ class PhonesController extends Controller
 {
     public function actions()
     {
-        $actions=parent::actions();
-        $actions['get-region']=[
-            'class'=>\chenkby\region\RegionAction::className(),
-            'model'=>\backend\models\Areas::className()
+        $actions = parent::actions();
+        $actions['get-region'] = [
+            'class' => \chenkby\region\RegionAction::className(),
+            'model' => \backend\models\Areas::className()
         ];
         return $actions;
     }
@@ -86,6 +87,31 @@ class PhonesController extends Controller
         ]);
     }
 
+    public function actionCreateAll()
+    {
+        $model = new Phones();
+        if (Yii::$app->request->getIsPost()) {
+            $data = Yii::$app->request->post();
+
+            unset($data[1]['phoneFile']);
+            $model->load($data);
+            $model->setPhoneFile(UploadedFile::getInstance($model, 'phoneFile'));
+            if (!$model->upload()) {
+                $model->addError($model, 'phoneFile', '文件上传失败');
+                return $this->goBack();
+            }
+            $phoneList = Phones::createMorePhone($model);
+            return $this->render('create-all-success', [
+                'dataProvider' => $phoneList,
+            ]);
+        }
+
+        return $this->render('create-all', [
+            'model' => $model,
+        ]);
+    }
+
+
     /**
      * Updates an existing Phones model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -119,6 +145,7 @@ class PhonesController extends Controller
 
         return $this->redirect(['index']);
     }
+
 
     /**
      * Finds the Phones model based on its primary key value.

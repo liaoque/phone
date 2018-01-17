@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Phones', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建手机号', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('批量创建手机号', ['create-all'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,14 +26,35 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'phone',
-            'province',
-            'city',
-            'area',
-            //'send_num',
-            //'see_num',
+            [
+                'attribute' =>  'province',
+                'format' => function($value){
+                    $result = \backend\models\Areas::getLevelList(0);
+                    return $result[$value];
+                },
+                'filter' => backend\models\Areas::getLevelList(0)
+            ],
+            [
+                'attribute' =>  'city',
+                'format' => function($value){
+                    $result = \backend\models\Areas::getLevelList(1);
+                    return $result[$value];
+                },
+                'filter' => backend\models\Areas::getLevelList(1)
+            ],
+            [
+                'attribute' =>  'area',
+                'format' => function($value){
+                    $result = \backend\models\Areas::getLevelList(2);
+                    return $result[$value];
+                },
+                'filter' => backend\models\Areas::getLevelList(2),
+            ],
+
+            'send_num',
+            'see_num',
             //'tags:ntext',
             //'status',
 
@@ -41,3 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
+
+<style>
+    .list-sm {
+        width: 50%;
+    }
+</style>

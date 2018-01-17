@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%phones}}".
@@ -19,6 +21,9 @@ use Yii;
  */
 class Phones extends \yii\db\ActiveRecord
 {
+
+    private $phoneFile;
+
     /**
      * @inheritdoc
      */
@@ -38,6 +43,7 @@ class Phones extends \yii\db\ActiveRecord
             [['phone'], 'string', 'max' => 11],
             [['province', 'city', 'area'], 'string', 'max' => 10],
             [['phone'], 'unique'],
+            [['phoneFile'], 'file', 'skipOnEmpty' => false],
         ];
     }
 
@@ -67,4 +73,68 @@ class Phones extends \yii\db\ActiveRecord
     {
         return new PhonesQuery(get_called_class());
     }
+
+    public function getPhoneFile()
+    {
+        return $this->phoneFile;
+    }
+
+    public function setPhoneFile($value)
+    {
+        $this->phoneFile = $value;
+        return $this;
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->phoneFile->saveAs('uploads/' . $this->phoneFile->baseName . '.' . $this->phoneFile->extension);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function createMorePhone(Phones $model)
+    {
+        $list = [];
+        $file = Yii::$app->getBasePath() . '/web/uploads/' . $model->phoneFile->name;
+        if (file_exists($file)) {
+            $result = file_get_contents($file);
+            $result = explode("\n", $result);
+
+            foreach ($result as $value) {
+                if (preg_match('/1\d{10}/', $value)) {
+                    $list[] = [
+                        'phone' => $value,
+                        'province' => $model->getAttribute('province'),
+                        'city' => $model->getAttribute('city'),
+                        'area' => $model->getAttribute('area'),
+                        'send_num' => $model->getAttribute('send_num'),
+                        'see_num' => $model->getAttribute('see_num'),
+                        'tags' => $model->getAttribute('tags'),
+                    ];
+                }
+            }
+            @unlink($file);
+            if (!empty($list)) {
+                !Yii::$app->db->createCommand()->batchInsert(self::tableName(), [
+                    'phone',
+                    'province',
+                    'city',
+                    'area',
+                    'send_num',
+                    'see_num',
+                    'tags',
+                ], $list)->execute();
+            }
+
+        }
+
+        return $list;
+
+
+    }
+
+
 }

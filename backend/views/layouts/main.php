@@ -74,11 +74,11 @@ AppAsset::register($this);
                     ],
                     [
                         'label' => '手机用户',
-                        'url' => ['/phone_users']
+                        'url' => ['/phone-users']
                     ],
                     [
                         'label' => '手机类型',
-                        'url' => ['/phone_types']
+                        'url' => ['/phone-types']
                     ],
                     [
                         'label' => '标签',

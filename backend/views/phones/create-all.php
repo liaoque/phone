@@ -1,18 +1,22 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Phones */
-/* @var $form yii\widgets\ActiveForm */
+
+$this->title = 'CreateAll Phones';
+$this->params['breadcrumbs'][] = ['label' => 'Phones', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="phones-create">
 
-<div class="phones-form">
+    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = \yii\bootstrap\ActiveForm::begin(['id' => 'login-form']); ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phoneFile')->fileInput()->label('手机号文件, 一行一个手机号'); ?>
 
 
 
@@ -54,6 +58,6 @@ use yii\widgets\ActiveForm;
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
 
+    <?php \yii\bootstrap\ActiveForm::end(); ?>
 </div>

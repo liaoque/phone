@@ -45,9 +45,24 @@ class Areas extends \yii\db\ActiveRecord
 
     public static function getRegion($parentId = 0)
     {
-        $result = static::find()->where(['pid' => $parentId])->asArray()->all();
-        return ArrayHelper::map($result, 'id', 'name');
+        static $list = [];
+        if (empty($list[$parentId])) {
+            $result = static::find()->where(['pid' => $parentId])->asArray()->all();
+            $list[$parentId] = ArrayHelper::map($result, 'id', 'name');
+        }
+        return $list[$parentId];
     }
+
+    public static function getLevelList($parentId = 0)
+    {
+        static $list = [];
+        if (empty($list[$parentId])) {
+            $result = static::find()->where(['level' => $parentId])->asArray()->all();
+            $list[$parentId] = ArrayHelper::map($result, 'id', 'name');
+        }
+        return $list[$parentId];
+    }
+
 
     /**
      * @inheritdoc
