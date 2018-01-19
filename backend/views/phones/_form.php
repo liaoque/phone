@@ -46,7 +46,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'see_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
 
-    <?= $form->field($model, 'tags')->hiddenInput() ?>
+
+    <?= $this->render('../tags/view-input', [
+        'model' => $model,
+        'form' => $form,
+    ]) ?>
 
     <?= $form->field($model, 'status')->dropDownList(\backend\models\Areas::getStatusList()) ?>
 
