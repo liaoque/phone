@@ -2,12 +2,15 @@
 
 namespace backend\controllers;
 
+use backend\models\TagsQuery;
 use Yii;
 use backend\models\Tags;
 use backend\models\TagsSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TagsController implements the CRUD actions for Tags model.
@@ -19,7 +22,7 @@ class TagsController extends Controller
      */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -27,6 +30,7 @@ class TagsController extends Controller
                 ],
             ],
         ];
+        return $behaviors;
     }
 
     /**
@@ -124,4 +128,16 @@ class TagsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    public function actionList($pid = 0){
+//      return  ArrayHelper::map(Tags::find()->where(['pid' => intval($pid)])->all(), 'id', 'name');
+        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        return Tags::find()->where(['pid' => intval($pid)])->all();
+    }
+
+
+
+
+
 }
