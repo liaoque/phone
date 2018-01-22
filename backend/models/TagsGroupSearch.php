@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Phones;
+use backend\models\TagsGroup;
 
 /**
- * PhonesSearch represents the model behind the search form of `backend\models\Phones`.
+ * TagsGroupSearch represents the model behind the search form of `backend\models\TagsGroup`.
  */
-class PhonesSearch extends Phones
+class TagsGroupSearch extends TagsGroup
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PhonesSearch extends Phones
     public function rules()
     {
         return [
-            [['id', 'send_num', 'see_num', 'tags_group_id', 'status'], 'integer'],
-            [['phone', 'province', 'city', 'area'], 'safe'],
+            [['id'], 'integer'],
+            [['sign', 'tags'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PhonesSearch extends Phones
      */
     public function search($params)
     {
-        $query = Phones::find();
+        $query = TagsGroup::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +60,10 @@ class PhonesSearch extends Phones
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'send_num' => $this->send_num,
-            'see_num' => $this->see_num,
-            'tags_group_id' => $this->tags_group_id,
-            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'province', $this->province])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'area', $this->area]);
+        $query->andFilterWhere(['like', 'sign', $this->sign])
+            ->andFilterWhere(['like', 'tags', $this->tags]);
 
         return $dataProvider;
     }

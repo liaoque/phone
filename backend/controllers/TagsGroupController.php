@@ -3,29 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Phones;
-use backend\models\PhonesSearch;
+use backend\models\TagsGroup;
+use backend\models\TagsGroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * PhonesController implements the CRUD actions for Phones model.
+ * TagsGroupController implements the CRUD actions for TagsGroup model.
  */
-class PhonesController extends Controller
+class TagsGroupController extends Controller
 {
-    public function actions()
-    {
-        $actions = parent::actions();
-        $actions['get-region'] = [
-            'class' => \chenkby\region\RegionAction::className(),
-            'model' => \backend\models\Areas::className()
-        ];
-        return $actions;
-    }
-
-
     /**
      * @inheritdoc
      */
@@ -42,12 +30,12 @@ class PhonesController extends Controller
     }
 
     /**
-     * Lists all Phones models.
+     * Lists all TagsGroup models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PhonesSearch();
+        $searchModel = new TagsGroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -57,7 +45,7 @@ class PhonesController extends Controller
     }
 
     /**
-     * Displays a single Phones model.
+     * Displays a single TagsGroup model.
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -70,53 +58,25 @@ class PhonesController extends Controller
     }
 
     /**
-     * Creates a new Phones model.
+     * Creates a new TagsGroup model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Phones();
+        $model = new TagsGroup();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-//        $model->setAttribute('tags', '');
-
         return $this->render('create', [
             'model' => $model,
-            'tags' => '11'
         ]);
     }
-
-    public function actionCreateAll()
-    {
-        $model = new Phones();
-        if (Yii::$app->request->getIsPost()) {
-            $data = Yii::$app->request->post();
-
-            unset($data[1]['phoneFile']);
-            $model->load($data);
-            $model->setPhoneFile(UploadedFile::getInstance($model, 'phoneFile'));
-            if (!$model->upload()) {
-                $model->addError($model, 'phoneFile', '文件上传失败');
-                return $this->goBack();
-            }
-            $phoneList = Phones::createMorePhone($model);
-            return $this->render('create-all-success', [
-                'dataProvider' => $phoneList,
-            ]);
-        }
-
-        return $this->render('create-all', [
-            'model' => $model,
-        ]);
-    }
-
 
     /**
-     * Updates an existing Phones model.
+     * Updates an existing TagsGroup model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -136,7 +96,7 @@ class PhonesController extends Controller
     }
 
     /**
-     * Deletes an existing Phones model.
+     * Deletes an existing TagsGroup model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -149,17 +109,16 @@ class PhonesController extends Controller
         return $this->redirect(['index']);
     }
 
-
     /**
-     * Finds the Phones model based on its primary key value.
+     * Finds the TagsGroup model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Phones the loaded model
+     * @return TagsGroup the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Phones::findOne($id)) !== null) {
+        if (($model = TagsGroup::findOne($id)) !== null) {
             return $model;
         }
 

@@ -105,11 +105,30 @@ class Tags extends \yii\db\ActiveRecord
 
     public function save($runValidation = true, $attributeNames = null)
     {
-
         $pid = $this->getAttribute('pid');
         $path = self::createPath($pid);
         $this->setAttribute('path', $path);
-        return parent::save();
+        $result =  parent::save();
+        if($result){
+            $pidList = explode('_', $path);
+            foreach ($pidList as $pid){
+                if($pid){
+                    $c = self::find()->where([ 'pid' => $pid ])->count();
+                    if($c){
+                        $tag = TagsInfo::find()->where(['id' => $pid])->one();
+                        if(empty($tag)){
+                            $tag = new TagsInfo();
+                            $tag->id = $this->pid;
+                        }
+                        $tag->subtag_num = $c;
+                        $tag->save();
+                    }
+                }
+            }
+
+        }
+        return $result;
     }
+
 
 }

@@ -106,13 +106,24 @@ $(function () {
                 childList.push(id);
                 var bt = createTag(tag);
                 bt.appendTo(selectorTarRow);
+                setInput();
             }else if(inList(id, pid) && !inChildList(path)){
                 confirm('您已经添加过该标签的子标签，是否要强制添加？（添加后，该标签下所有子标签都会绑定）', function () {
-                    
+                    removeList(id, pid);
+                    addList(path);
+                    childList.push(id);
+                    var bt = createTag(tag);
+                    bt.appendTo(selectorTarRow);
+                    setInput();
                 });
             }else if(!inList(id, pid) && inChildList(path)){
                 confirm('您已经添加过该标签的父标签，是否强制添加？（添加后，只有该标签会被绑定）', function () {
-
+                    removeChildList(id);
+                    addList(path);
+                    childList.push(id);
+                    var bt = createTag(tag);
+                    bt.appendTo(selectorTarRow);
+                    setInput();
                 });
             }
         }
@@ -193,9 +204,18 @@ $(function () {
             bt = $(bt);
             bt.children().on('close.bs.alert', function () {
                 // do something…
-                removeList(id, pid)
+                removeList(id, pid);
+
+                setInput();
             })
             return bt;
+        }
+
+
+        function setInput() {
+            //吧值放进tags 表单里面
+            var _tags = childList.sort().join(',');
+            $('input[name="Phones[tags]"]').val(_tags);
         }
 
         function removeTag(id) {

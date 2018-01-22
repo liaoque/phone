@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Phones */
+/* @var $model backend\models\TagsGroup */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Phones', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tags Groups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="phones-view">
+<div class="tags-group-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,14 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'phone',
-            'province',
-            'city',
-            'area',
-            'send_num',
-            'see_num',
-            'tags_group_id',
-            'status',
+            'sign',
+            'tags:ntext',
         ],
     ]) ?>
 

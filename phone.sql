@@ -4658,7 +4658,7 @@ INSERT INTO `mc_user` VALUES ('26', '123456', '844596330@qq.com', '$2y$10$Cks9fA
 -- ----------------------------
 -- Table structure for `tag_group`
 -- ----------------------------
-DROP TABLE IF EXISTS `tag_group`;
+DROP TABLE IF EXISTS mc_tags_group;
 CREATE TABLE `tag_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sign` char(255) DEFAULT NULL COMMENT '签名',

@@ -3,11 +3,11 @@
 namespace backend\models;
 
 /**
- * This is the ActiveQuery class for [[Phones]].
+ * This is the ActiveQuery class for [[TagsGroupJoin]].
  *
- * @see Phones
+ * @see TagsGroupJoin
  */
-class PhonesQuery extends \yii\db\ActiveQuery
+class TagsGroupJoinQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class PhonesQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Phones[]|array
+     * @return TagsGroupJoin[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class PhonesQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Phones|array|null
+     * @return TagsGroupJoin|array|null
      */
     public function one($db = null)
     {

@@ -1,5 +1,18 @@
-<?= $form->field($model, 'tags')->hiddenInput(['class' => 'tags_list_view clearfix']) ?>
-<p class="clearfix" style="height: 20px;"></p>
+<?php //$form->field($model, 'tags')->hiddenInput(['class' => 'tags_list_view clearfix']) ?>
+
+<div class="form-group field-phones-tags">
+    <label class="control-label" for="phones-tags">标签</label>
+    <?= \yii\helpers\Html::input('hidden', 'Phones[tags]',$tags, [
+        'class' => 'form-control tags_list_view clearfix',
+        'id' => 'phones-tags'
+    ]) ?>
+    <div class="help-block"></div>
+
+</div>
+
+
+
+<p class="clearfix" style=""></p>
 <div class="form-group clearfix" id="tagsList" data-url="<?= \yii\helpers\Url::toRoute(['tags/list']) ?>">
     <!--    <label class="control-label" for="phones-tags">Tags</label>-->
     <!--    <input type="hidden" id="phones-tags" class="tags_list_view" name="Phones[tags]">-->

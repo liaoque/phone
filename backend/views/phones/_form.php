@@ -45,11 +45,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'send_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
 
     <?= $form->field($model, 'see_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
+    <?= $form->field($model, 'tags_group_id')->hiddenInput(['value' => 0]) ?>
 
 
     <?= $this->render('../tags/view-input', [
         'model' => $model,
         'form' => $form,
+        'tags' => $tags
     ]) ?>
 
     <?= $form->field($model, 'status')->dropDownList(\backend\models\Areas::getStatusList()) ?>
