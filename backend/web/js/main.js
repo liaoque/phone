@@ -62,7 +62,7 @@ $(function () {
             });
             target.bindClicked = true;
         }
-        
+
         function removeTags(target) {
             if(target.nextTagList){
                 removeTags(target.nextTagList);
@@ -204,8 +204,8 @@ $(function () {
             bt = $(bt);
             bt.children().on('close.bs.alert', function () {
                 // do something…
+                removeTag(id)
                 removeList(id, pid);
-
                 setInput();
             })
             return bt;

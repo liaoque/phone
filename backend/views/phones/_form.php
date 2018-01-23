@@ -15,8 +15,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
 
-
-    <?= $form->field($model, 'areas', [
+    <?= $form->field($model, 'area', [
         'options' => [
             'class' => 'form-inline',
         ],
@@ -45,7 +44,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'send_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
 
     <?= $form->field($model, 'see_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
-    <?= $form->field($model, 'tags_group_id')->hiddenInput(['value' => 0]) ?>
 
 
     <?= $this->render('../tags/view-input', [

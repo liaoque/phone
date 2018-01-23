@@ -22,6 +22,7 @@ use yii\web\UploadedFile;
 class Phones extends \yii\db\ActiveRecord
 {
     private $phoneFile;
+    protected $tags;
 
     /**
      * @inheritdoc
@@ -37,8 +38,9 @@ class Phones extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['send_num', 'see_num', 'tags_group_id', 'status'], 'integer'],
+            [['send_num', 'see_num', 'status'], 'integer'],
             [['phone'], 'string', 'max' => 11],
+            [['province', 'city', 'area', 'phone', 'tags'], 'required'],
             [['province', 'city', 'area'], 'string', 'max' => 10],
             [['phone'], 'unique'],
         ];
@@ -116,6 +118,11 @@ class Phones extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PhonesQuery(get_called_class());
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
     }
 
     public function getPhoneFile()
