@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "{{%logs}}".
  *
@@ -36,6 +36,23 @@ class Logs extends \yii\db\ActiveRecord
             [['send_time', 'see_time'], 'safe'],
             [['url'], 'string', 'max' => 255],
             [['id'], 'unique'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    # 创建之前
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    # 修改之前
+                    self::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                #设置默认值
+                'value' => time()
+            ]
         ];
     }
 

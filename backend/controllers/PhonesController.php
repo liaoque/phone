@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\PhoneUsers;
 use Yii;
 use backend\models\Phones;
 use backend\models\PhonesSearch;
@@ -77,16 +78,14 @@ class PhonesController extends Controller
     public function actionCreate()
     {
         $model = new Phones();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $data = Yii::$app->request->post();
+        if ($model->load($data)  && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-//        $model->setAttribute('tags', '');
-
+        $phoneUsersModel = new PhoneUsers();
         return $this->render('create', [
             'model' => $model,
-            'tags' => '11'
+            'phoneUsersModel' => $phoneUsersModel
         ]);
     }
 
@@ -95,23 +94,38 @@ class PhonesController extends Controller
         $model = new Phones();
         if (Yii::$app->request->getIsPost()) {
             $data = Yii::$app->request->post();
-
             unset($data[1]['phoneFile']);
-            $model->load($data);
-            $model->setPhoneFile(UploadedFile::getInstance($model, 'phoneFile'));
-            if (!$model->upload()) {
-                $model->addError($model, 'phoneFile', '文件上传失败');
-                return $this->goBack();
+            if ($model->load($data) && $model->validate()) {
+                $model->setPhoneFile(UploadedFile::getInstance($model, 'phoneFile'));
+                if (!$model->upload()) {
+                    $model->addError($model, 'phoneFile', '文件上传失败');
+                    return $this->goBack();
+                }
+                $phoneList = Phones::createMorePhone($model);
+                $session = Yii::$app->session;
+                $session->setFlash(Phones::CREATE_MORE_SUCCESS, $phoneList);
+                return $this->redirect('create-success');
             }
-            $phoneList = Phones::createMorePhone($model);
+        }
+        $phoneUsersModel = new PhoneUsers();
+        return $this->render('create-all', [
+            'model' => $model,
+            'phoneUsersModel' => $phoneUsersModel
+        ]);
+    }
+
+    public function actionCreateSuccess()
+    {
+        $session = Yii::$app->session;
+        $result = $session->hasFlash(Phones::CREATE_MORE_SUCCESS);
+        if ($result) {
+            $phoneList = $session->getFlash(Phones::CREATE_MORE_SUCCESS);
             return $this->render('create-all-success', [
                 'dataProvider' => $phoneList,
             ]);
+        } else {
+            return $this->redirect('index');
         }
-
-        return $this->render('create-all', [
-            'model' => $model,
-        ]);
     }
 
 
@@ -129,9 +143,9 @@ class PhonesController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
+            'phoneUsersModel' => $model->phoneUser
         ]);
     }
 

@@ -30,13 +30,73 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'phone',
-            'province',
-            'city',
-            'area',
+            [
+                'attribute' => 'province',
+                'format' => function ($value) {
+                    $result = \backend\models\Areas::getLevelList(0);
+                    return $result[$value];
+                },
+            ],
+            [
+                'attribute' => 'city',
+                'format' => function ($value) {
+                    $result = \backend\models\Areas::getLevelList(1);
+                    return $result[$value];
+                },
+            ],
+            [
+                'attribute' => 'area',
+                'format' => function ($value) {
+                    $result = \backend\models\Areas::getLevelList(2);
+                    return $result[$value];
+                },
+            ],
             'send_num',
             'see_num',
-            'tags_group_id',
-            'status',
+            [
+                'attribute' => 'tags_group_id',
+                'format' => function ($value) use ($model) {
+                    $tags = $model->tagsGroup->tags;
+                    $tags = \yii\helpers\ArrayHelper::map(\backend\models\Tags::find()->where(['id' => explode(',', $tags)])->all(), 'id', 'name');
+                    return implode(',', $tags);
+                },
+                'label' => '标签'
+            ],
+            [
+                'attribute' => 'id',
+                'format' => function ($value) use ($model) {
+                    return \backend\models\PhoneUsers::getSexList()[$model->phoneUser->sex];
+                },
+                'label' => '性别'
+            ],
+            [
+                'attribute' => 'id',
+                'format' => function ($value) use ($model) {
+                    return \backend\models\PhoneUsers::getAgeList()[$model->phoneUser->age];
+                },
+                'label' => '年龄段'
+            ],
+            [
+                'attribute' => 'id',
+                'format' => function ($value) use ($model) {
+                    return \backend\models\PhoneTypes::getTypeList()[$model->phoneUser->phoneTypes->type];
+                },
+                'label' => '手机类型'
+            ],
+            [
+                'attribute' => 'id',
+                'format' => function ($value) use ($model) {
+                    return $model->phoneUser->phoneTypes->info;
+                },
+                'label' => '手机类型'
+            ],
+            [
+                'attribute' => 'status',
+                'format' => function ($value) {
+                    return \backend\models\Phones::getStatusList()[$value];
+                },
+                'label' => '状态'
+            ],
         ],
     ]) ?>
 

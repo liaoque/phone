@@ -8,13 +8,16 @@ use Yii;
  * This is the model class for table "{{%tasks}}".
  *
  * @property int $id
- * @property string $title
- * @property string $info
- * @property string $tags
- * @property string $areas
- * @property string $agrs
- * @property int $num
- * @property string $keywords
+ * @property string $title 标题
+ * @property string $info 推送内容
+ * @property int $agrs 年龄段
+ * @property int $sex 性别
+ * @property string $send_num 发送数目
+ * @property string $send_end_num 已发送条数
+ * @property int $created_at 创建时间
+ * @property int $updated_at 更新时间
+ * @property string $desc 备注
+ * @property int $status 状态
  */
 class Tasks extends \yii\db\ActiveRecord
 {
@@ -32,10 +35,10 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'num'], 'integer'],
+            [['id', 'created_at', 'updated_at'], 'required'],
+            [['id', 'agrs', 'sex', 'send_num', 'send_end_num', 'created_at', 'updated_at', 'status'], 'integer'],
             [['info'], 'string'],
-            [['title', 'tags', 'areas', 'agrs', 'keywords'], 'string', 'max' => 255],
+            [['title', 'desc'], 'string', 'max' => 255],
             [['id'], 'unique'],
         ];
     }
@@ -47,13 +50,16 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'info' => 'Info',
-            'tags' => 'Tags',
-            'areas' => 'Areas',
-            'agrs' => 'Agrs',
-            'num' => 'Num',
-            'keywords' => 'Keywords',
+            'title' => '标题',
+            'info' => '推送内容',
+            'agrs' => '年龄段',
+            'sex' => '性别',
+            'send_num' => '发送数目',
+            'send_end_num' => '已发送条数',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
+            'desc' => '备注',
+            'status' => '状态',
         ];
     }
 

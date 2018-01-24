@@ -27,7 +27,7 @@ class TagsGroupJoin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'tags_group_id', 'tags_id'], 'integer'],
+            [['tags_group_id', 'tags_id'], 'integer'],
         ];
     }
 
@@ -51,4 +51,11 @@ class TagsGroupJoin extends \yii\db\ActiveRecord
     {
         return new TagsGroupJoinQuery(get_called_class());
     }
+
+    public function getTags()
+    {
+        return $this->hasOne(Tags::className(), ['id' => 'tags_id']);
+    }
+
+
 }

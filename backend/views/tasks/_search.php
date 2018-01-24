@@ -24,15 +24,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'info') ?>
 
-    <?= $form->field($model, 'tags') ?>
+    <?= $form->field($model, 'agrs') ?>
 
-    <?= $form->field($model, 'areas') ?>
+    <?= $form->field($model, 'sex') ?>
 
-    <?php // echo $form->field($model, 'agrs') ?>
+    <?php // echo $form->field($model, 'send_num') ?>
 
-    <?php // echo $form->field($model, 'num') ?>
+    <?php // echo $form->field($model, 'send_end_num') ?>
 
-    <?php // echo $form->field($model, 'keywords') ?>
+    <?php // echo $form->field($model, 'created_at') ?>
+
+    <?php // echo $form->field($model, 'updated_at') ?>
+
+    <?php // echo $form->field($model, 'desc') ?>
+
+    <?php // echo $form->field($model, 'status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -5,7 +5,7 @@ namespace backend\models;
 use Codeception\Step\Condition;
 use Yii;
 use yii\helpers\ArrayHelper;
-
+use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "{{%tags}}".
  *
@@ -48,6 +48,22 @@ class Tags extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    # 创建之前
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    # 修改之前
+                    self::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                #设置默认值
+                'value' => time()
+            ]
+        ];
+    }
 
     public static function getTreeTags($model)
     {

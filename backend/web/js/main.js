@@ -86,6 +86,11 @@ $(function () {
         var childList = [];
 
         var divId = '#tagsList';
+        if(!document.querySelector(divId)){
+            return ;
+        }
+
+
         var selectorTarRow = $('#phones-tags').parent();
         var row = $('<div class=" form-group "><div class="col-sm-12"></div></div>').insertAfter(divId);
         var button = $('<button type="button" class="btn btn-default ">添加</button>');

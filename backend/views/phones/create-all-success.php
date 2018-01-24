@@ -12,12 +12,27 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="phones-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="row">
-        <?php foreach($dataProvider as $value){ ?>
-        <div class="col-sm-6 col-md-4">  <?= $value['phone'] ?></div>
-        <?php } ?>
-    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item active">  <h3><?= Html::encode("新增手机号") ?></h3></li>
+                    <?php foreach($dataProvider['insert'] as $value){ ?>
+                        <li class="list-group-item list-group-item-success"><?= $value ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
 
+            <div class="col-sm-6 col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item active">  <h3><?= Html::encode("更新手机号") ?></h3></li>
+
+                    <?php foreach($dataProvider['update'] as $value){ ?>
+                        <li class="list-group-item list-group-item-success"><?= $value ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </div>

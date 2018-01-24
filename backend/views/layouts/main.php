@@ -70,27 +70,27 @@ AppAsset::register($this);
                 'items' => [
                     [
                         'label' => '手机号管理',
-                        'url' => ['/phones']
+                        'url' => ['/phones/index']
                     ],
                     [
                         'label' => '手机用户',
-                        'url' => ['/phone-users']
+                        'url' => ['/phone-users/index']
                     ],
                     [
                         'label' => '手机类型',
-                        'url' => ['/phone-types']
+                        'url' => ['/phone-types/index']
                     ],
                     [
                         'label' => '标签',
-                        'url' => ['/tags']
+                        'url' => ['/tags/index']
                     ],
                     [
                         'label' => '日志',
-                        'url' => ['/logs']
+                        'url' => ['/logs/index']
                     ],
                     [
                         'label' => '区域',
-                        'url' => ['/areas']
+                        'url' => ['/areas/index']
                     ]
                 ],
             ]);

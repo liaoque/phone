@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%phone_users}}".
@@ -19,14 +20,22 @@ class PhoneUsers extends \yii\db\ActiveRecord
     public static function getSexList()
     {
         return [
-            '未知', '男', '女'
+            0 => '未知', 1 => '男', 2 => '女'
         ];
     }
 
     public static function getAgeList()
     {
         return [
-            '全部', '18以下', '19-23', '24-27', '28-35', '36-45', '45-55', '56-66', '66以上'
+            0 => '全部',
+            1 => '18以下',
+            2 => '19-23',
+            4 => '24-27',
+            8 => '28-35',
+            16 => '36-45',
+            32 => '45-55',
+            64 => '56-66',
+            128 => '66以上'
         ];
     }
 
@@ -63,6 +72,23 @@ class PhoneUsers extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    # 创建之前
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    # 修改之前
+                    self::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                #设置默认值
+                'value' => time()
+            ]
+        ];
+    }
+
     /**
      * @inheritdoc
      * @return PhoneUsersQuery the active query used by this AR class.
@@ -91,6 +117,10 @@ class PhoneUsers extends \yii\db\ActiveRecord
         }
     }
 
+    public function getPhoneTypes()
+    {
+        return $this->hasOne(PhoneTypes::className(), ['id' => 'phone_type_id']);
+    }
 
 //    public function load($data, $formName = null)
 //    {

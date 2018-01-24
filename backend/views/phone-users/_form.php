@@ -14,11 +14,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'phone_num')->textInput(['maxlength' => true])->label('手机号') ?>
 
-    <?= $form->field($model, 'sex')->dropDownList(\backend\models\PhoneUsers::getSexList())->label('性别') ?>
-
-    <?= $form->field($model, 'age')->dropDownList(\backend\models\PhoneUsers::getAgeList())->label('年龄段')  ?>
-
-    <?= $form->field($model, 'phone_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\yii\helpers\ArrayHelper::toArray(\backend\models\PhoneTypes::find()->all()), 'id', 'info'))->label('手机型号') ?>
+    <?= $this->render('_form_input', [
+        'form' => $form,
+        'model' => $model
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
