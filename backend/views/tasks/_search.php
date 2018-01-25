@@ -24,13 +24,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'info') ?>
 
-    <?= $form->field($model, 'agrs') ?>
+    <?= $form->field($model, 'age') ?>
 
     <?= $form->field($model, 'sex') ?>
 
     <?php // echo $form->field($model, 'send_num') ?>
 
     <?php // echo $form->field($model, 'send_end_num') ?>
+
+    <?php // echo $form->field($model, 'phone_num') ?>
+
+    <?php // echo $form->field($model, 'subtag_num') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

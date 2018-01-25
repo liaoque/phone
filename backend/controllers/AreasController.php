@@ -8,6 +8,7 @@ use backend\models\AreasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AreasController implements the CRUD actions for Areas model.
@@ -124,4 +125,11 @@ class AreasController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionList($pid = 0){
+        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        return Areas::find()->where(['pid' => intval($pid)])->all();
+    }
+
+
 }

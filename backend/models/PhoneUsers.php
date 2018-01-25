@@ -20,7 +20,7 @@ class PhoneUsers extends \yii\db\ActiveRecord
     public static function getSexList()
     {
         return [
-            0 => '未知', 1 => '男', 2 => '女'
+            1 => '男', 2 => '女', 3 => '未知'
         ];
     }
 

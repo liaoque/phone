@@ -16,6 +16,8 @@ use yii\helpers\ArrayHelper;
  */
 class Areas extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */
@@ -31,6 +33,8 @@ class Areas extends \yii\db\ActiveRecord
             -1 => '禁止',
         ];
     }
+
+
 
     /**
      * @inheritdoc

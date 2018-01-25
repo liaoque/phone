@@ -11,7 +11,7 @@ $(function () {
             return;
         }
         var pid = pid;
-        var _target = document.querySelector(targetId);
+        var _target = document.querySelector(divId + ' ' + targetId);
         var target = _target[targetId] ? _target[targetId] : (_target[targetId] = $(_target));
 
         function getList(pid, callback) {
@@ -64,12 +64,12 @@ $(function () {
         }
 
         function removeTags(target) {
-            if(target.nextTagList){
+            if (target.nextTagList) {
                 removeTags(target.nextTagList);
             }
             var nextTagList = target.data('next-tag-list');
-            if(nextTagList){
-                $('.' + nextTagList).children('option:first-child').siblings().remove();
+            if (nextTagList) {
+                $(divId + ' ' + '.' + nextTagList).children('option:first-child').siblings().remove();
             }
         }
 
@@ -81,21 +81,19 @@ $(function () {
         return target;
     }
 
-    function initTagsSelectorList() {
+    function initTagsSelectorList(divId, selectorTarRow) {
         var parentList = {};
         var childList = [];
-
-        var divId = '#tagsList';
-        if(!document.querySelector(divId)){
-            return ;
+        var list = [];
+        var firstList = $(selectorTarRow).data('first-list');
+        selectorTarRow = $(selectorTarRow).parent();
+        if (!document.querySelector(divId)) {
+            return;
         }
-
-
-        var selectorTarRow = $('#phones-tags').parent();
         var row = $('<div class=" form-group "><div class="col-sm-12"></div></div>').insertAfter(divId);
         var button = $('<button type="button" class="btn btn-default ">添加</button>');
         button.appendTo(row.children());
-        var _tagsList = new tagsList(0, '.list-tags-one', divId);
+        var _tagsList = new tagsList(0, '.' + firstList, divId);
         button.click(function () {
             var tag = getSelectorTags(_tagsList);
             addTag(tag, selectorTarRow);
@@ -106,31 +104,40 @@ $(function () {
             var pid = tag.data('pid');
             var path = tag.data('path');
             path += '_' + id;
-            if (!inList(id, pid) && !inChildList(path)) {
-                addList(path);
-                childList.push(id);
-                var bt = createTag(tag);
-                bt.appendTo(selectorTarRow);
+            if (list.indexOf(id) == -1) {
+                //addList(path);
+                //childList.push(id);
+                list.push(id);
+                createTag(tag).appendTo(selectorTarRow);
                 setInput();
-            }else if(inList(id, pid) && !inChildList(path)){
-                confirm('您已经添加过该标签的子标签，是否要强制添加？（添加后，该标签下所有子标签都会绑定）', function () {
-                    removeList(id, pid);
-                    addList(path);
-                    childList.push(id);
-                    var bt = createTag(tag);
-                    bt.appendTo(selectorTarRow);
-                    setInput();
-                });
-            }else if(!inList(id, pid) && inChildList(path)){
-                confirm('您已经添加过该标签的父标签，是否强制添加？（添加后，只有该标签会被绑定）', function () {
-                    removeChildList(id);
-                    addList(path);
-                    childList.push(id);
-                    var bt = createTag(tag);
-                    bt.appendTo(selectorTarRow);
-                    setInput();
-                });
             }
+
+
+            //if (!inList(id, pid) && !inChildList(path)) {
+            //    addList(path);
+            //    childList.push(id);
+            //    var bt = createTag(tag);
+            //    bt.appendTo(selectorTarRow);
+            //    setInput();
+            //}else if(inList(id, pid) && !inChildList(path)){
+            //    confirm('您已经添加过该标签的子标签，是否要强制添加？（添加后，该标签下所有子标签都会绑定）', function () {
+            //        removeList(id, pid);
+            //        addList(path);
+            //        childList.push(id);
+            //        var bt = createTag(tag);
+            //        bt.appendTo(selectorTarRow);
+            //        setInput();
+            //    });
+            //}else if(!inList(id, pid) && inChildList(path)){
+            //    confirm('您已经添加过该标签的父标签，是否强制添加？（添加后，只有该标签会被绑定）', function () {
+            //        removeChildList(id);
+            //        addList(path);
+            //        childList.push(id);
+            //        var bt = createTag(tag);
+            //        bt.appendTo(selectorTarRow);
+            //        setInput();
+            //    });
+            //}
         }
 
         function inList(id, pid) {
@@ -156,7 +163,7 @@ $(function () {
 
         function removeChildList(id) {
             var index = childList.indexOf(id);
-            if (index> -1) {
+            if (index > -1) {
                 childList.splice(index, 1);
             }
         }
@@ -209,22 +216,29 @@ $(function () {
             bt = $(bt);
             bt.children().on('close.bs.alert', function () {
                 // do something…
-                removeTag(id)
-                removeList(id, pid);
+                removeTag(id);
+                //removeList(id, pid);
+
+                var index = list.indexOf(id);
+                if (index > -1) {
+                    list.splice(index, 1);
+                }
                 setInput();
-            })
+
+            });
             return bt;
         }
 
 
         function setInput() {
             //吧值放进tags 表单里面
-            var _tags = childList.sort().join(',');
-            $('input[name="Phones[tags]"]').val(_tags);
+            //var _tags = childList.sort().join(',');
+            var _tags = list.sort().join(',');
+            selectorTarRow.find('input').val(_tags);
         }
 
         function removeTag(id) {
-            $('#tag' + id).parent().remove();
+            selectorTarRow.find('#tag' + id).parent().remove();
         }
 
 
@@ -242,7 +256,9 @@ $(function () {
         }
     }
 
-    initTagsSelectorList()
+    initTagsSelectorList("#tagsList", '#phones-tags')
+    initTagsSelectorList("#areasList", '#tasks-areas')
+
 
     var _confirm = $('#confirm').on('show.bs.modal', function (e) {
         // do something...
@@ -250,7 +266,7 @@ $(function () {
         _confirm.message = '';
     });
     _confirm.find('.btn-primary').on('click', function () {
-        if(_confirm.callback ){
+        if (_confirm.callback) {
             _confirm.callback();
             _confirm.callback = null;
         }
@@ -262,6 +278,27 @@ $(function () {
         _confirm.callback = callback;
         _confirm.modal('show');
     }
+
+
+
+    function checkListCharge(target){
+        var _target  =  $(target);
+        _target.change(function () {
+            var self = $(this);
+            var i = self.index();
+            if (this.value == 0) {
+                _target.prop('checked', self.is(':checked'));
+            } else {
+                _target.first().prop('checked', (_target.length - 1) == $(target +'[value!=0]:checked').length);
+            }
+        });
+    }
+
+    checkListCharge('.tasks-age');
+    checkListCharge('.tasks-sex');
+
+
+
 
 });
 

@@ -85,6 +85,10 @@ AppAsset::register($this);
                         'url' => ['/tags/index']
                     ],
                     [
+                        'label' => '任务',
+                        'url' => ['/tasks/index']
+                    ],
+                    [
                         'label' => '日志',
                         'url' => ['/logs/index']
                     ],

@@ -12,27 +12,38 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'info')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'agrs')->textInput() ?>
+    <?= $form->field($model, 'age')->checkboxList(\backend\models\PhoneUsers::getAgeList(), [
+        'itemOptions' => [
+            'class' => 'tasks-age'
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'sex')->textInput() ?>
+    <?= $form->field($model, 'sex')->checkboxList(\yii\helpers\ArrayHelper::merge([0 => '全部'], \backend\models\PhoneUsers::getSexList()), [
+        'itemOptions' => [
+            'class' => 'tasks-sex'
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'send_num')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'send_end_num')->textInput(['maxlength' => true]) ?>
+    <?= $this->render('../tags/view-input', [
+        'model' => $modelPhone,
+        'form' => $form
+    ]) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?= $this->render('../areas/view-input', [
+        'model' => $model,
+        'form' => $form
+    ]) ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+
+    <?= $form->field($model, 'send_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
+
 
     <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

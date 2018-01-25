@@ -1,4 +1,7 @@
-<?= $form->field($model, 'tags')->hiddenInput(['class' => 'tags_list_view clearfix']) ?>
+<?= $form->field($model, 'tags')->hiddenInput([
+    'class' => 'tags_list_view clearfix',
+    'data-first-list' =>  'list-tags-one'
+]) ?>
 
 <p class="clearfix" style=""></p>
 <div class="form-group clearfix" id="tagsList" data-url="<?= \yii\helpers\Url::toRoute(['tags/list']) ?>">

@@ -18,7 +18,7 @@ class TasksSearch extends Tasks
     public function rules()
     {
         return [
-            [['id', 'agrs', 'sex', 'send_num', 'send_end_num', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['id', 'age', 'sex', 'send_num', 'send_end_num', 'phone_num', 'subtag_num', 'created_at', 'updated_at', 'status'], 'integer'],
             [['title', 'info', 'desc'], 'safe'],
         ];
     }
@@ -60,10 +60,12 @@ class TasksSearch extends Tasks
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'agrs' => $this->agrs,
+            'age' => $this->agrs,
             'sex' => $this->sex,
             'send_num' => $this->send_num,
             'send_end_num' => $this->send_end_num,
+            'phone_num' => $this->phone_num,
+            'subtag_num' => $this->subtag_num,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'status' => $this->status,

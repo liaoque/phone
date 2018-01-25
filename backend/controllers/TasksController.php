@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use backend\models\Areas;
+use backend\models\Phones;
 use Yii;
 use backend\models\Tasks;
 use backend\models\TasksSearch;
@@ -69,9 +71,10 @@ class TasksController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        $modelPhone =  new Phones();
         return $this->render('create', [
             'model' => $model,
+            'modelPhone' => $modelPhone,
         ]);
     }
 
@@ -124,4 +127,6 @@ class TasksController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
 }
