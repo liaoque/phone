@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\PhoneUsers;
+use backend\models\TagsGroup;
 use Yii;
 use backend\models\Phones;
 use backend\models\PhonesSearch;
@@ -143,6 +144,7 @@ class PhonesController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        $model->tags = $model->tagsGroup->tags;
         return $this->render('update', [
             'model' => $model,
             'phoneUsersModel' => $model->phoneUser

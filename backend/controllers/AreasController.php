@@ -127,7 +127,11 @@ class AreasController extends Controller
     }
 
     public function actionList($pid = 0){
+
         Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        if ($ids = Yii::$app->getRequest()->get('idList')) {
+            return Areas::find()->where(['id' => explode(',', $ids)])->all();
+        }
         return Areas::find()->where(['pid' => intval($pid)])->all();
     }
 

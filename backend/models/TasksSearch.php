@@ -60,8 +60,6 @@ class TasksSearch extends Tasks
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'age' => $this->agrs,
-            'sex' => $this->sex,
             'send_num' => $this->send_num,
             'send_end_num' => $this->send_end_num,
             'phone_num' => $this->phone_num,
@@ -70,6 +68,9 @@ class TasksSearch extends Tasks
             'updated_at' => $this->updated_at,
             'status' => $this->status,
         ]);
+
+        $query->andFilterWhere(['&' , 'age',$this->age ]);
+        $query->andFilterWhere(['&' , 'sex',$this->sex ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'info', $this->info])

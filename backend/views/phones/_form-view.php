@@ -35,6 +35,8 @@ use yii\widgets\ActiveForm;
     ?>
 
 
+
+
     <?= $form->field($model, 'send_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
 
     <?= $form->field($model, 'see_num')->textInput(['maxlength' => true, 'value' => 0]) ?>

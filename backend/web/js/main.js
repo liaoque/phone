@@ -96,13 +96,18 @@ $(function () {
         var _tagsList = new tagsList(0, '.' + firstList, divId);
         button.click(function () {
             var tag = getSelectorTags(_tagsList);
-            addTag(tag, selectorTarRow);
+            addTag({
+                value: tag.val(),
+                pid: tag.data('pid'),
+                path: tag.data('path'),
+                text: tag.text()
+            }, selectorTarRow);
         });
 
         function addTag(tag, selectorTarRow) {
-            var id = tag.val();
-            var pid = tag.data('pid');
-            var path = tag.data('path');
+            var id = tag.value;
+            var pid = tag.pid;
+            var path = tag.path;
             path += '_' + id;
             if (list.indexOf(id) == -1) {
                 //addList(path);
@@ -111,33 +116,6 @@ $(function () {
                 createTag(tag).appendTo(selectorTarRow);
                 setInput();
             }
-
-
-            //if (!inList(id, pid) && !inChildList(path)) {
-            //    addList(path);
-            //    childList.push(id);
-            //    var bt = createTag(tag);
-            //    bt.appendTo(selectorTarRow);
-            //    setInput();
-            //}else if(inList(id, pid) && !inChildList(path)){
-            //    confirm('您已经添加过该标签的子标签，是否要强制添加？（添加后，该标签下所有子标签都会绑定）', function () {
-            //        removeList(id, pid);
-            //        addList(path);
-            //        childList.push(id);
-            //        var bt = createTag(tag);
-            //        bt.appendTo(selectorTarRow);
-            //        setInput();
-            //    });
-            //}else if(!inList(id, pid) && inChildList(path)){
-            //    confirm('您已经添加过该标签的父标签，是否强制添加？（添加后，只有该标签会被绑定）', function () {
-            //        removeChildList(id);
-            //        addList(path);
-            //        childList.push(id);
-            //        var bt = createTag(tag);
-            //        bt.appendTo(selectorTarRow);
-            //        setInput();
-            //    });
-            //}
         }
 
         function inList(id, pid) {
@@ -205,13 +183,13 @@ $(function () {
 
 
         function createTag(tag) {
-            var id = tag.val();
-            var pid = tag.data('pid');
+            var id = tag.value;
+            var pid = tag.pid;
             var bt = '<div class="col-sm-2">' +
                 '<div id="tag' + id + '" style="padding: 0px;margin-bottom: 4px;" class="alert fade in" role="alert">\n' +
                 '        <button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                 '<span aria-hidden="true">×</span></button>\n' +
-                tag.text() +
+                tag.text +
                 '    </div></div>';
             bt = $(bt);
             bt.children().on('close.bs.alert', function () {
@@ -237,6 +215,12 @@ $(function () {
             selectorTarRow.find('input').val(_tags);
         }
 
+        function getInput() {
+            //吧值放进tags 表单里面
+            //var _tags = childList.sort().join(',');
+            return selectorTarRow.find('input').val();
+        }
+
         function removeTag(id) {
             selectorTarRow.find('#tag' + id).parent().remove();
         }
@@ -254,9 +238,25 @@ $(function () {
             }
             return result;
         }
+
+
+        function init() {
+            var list = getInput();
+            $.getJSON($(divId).data('url'), {idList: list}, function (data) {
+                data.forEach(function (tag) {
+                    addTag({
+                        value: tag.id,
+                        pid: tag.pid,
+                        path: tag.path,
+                        text: tag.name
+                    }, selectorTarRow);
+                });
+            })
+        }
+        init();
     }
 
-    initTagsSelectorList("#tagsList", '#phones-tags')
+    initTagsSelectorList("#tagsList", '.tags_list_view')
     initTagsSelectorList("#areasList", '#tasks-areas')
 
 
@@ -280,24 +280,21 @@ $(function () {
     }
 
 
-
-    function checkListCharge(target){
-        var _target  =  $(target);
+    function checkListCharge(target) {
+        var _target = $(target);
         _target.change(function () {
             var self = $(this);
             var i = self.index();
             if (this.value == 0) {
                 _target.prop('checked', self.is(':checked'));
             } else {
-                _target.first().prop('checked', (_target.length - 1) == $(target +'[value!=0]:checked').length);
+                _target.first().prop('checked', (_target.length - 1) == $(target + '[value!=0]:checked').length);
             }
         });
     }
 
     checkListCharge('.tasks-age');
     checkListCharge('.tasks-sex');
-
-
 
 
 });

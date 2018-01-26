@@ -4,6 +4,11 @@ namespace backend\controllers;
 
 use backend\models\Areas;
 use backend\models\Phones;
+use backend\models\PhoneUsers;
+use backend\models\TagsGroupJoin;
+use backend\models\TasksAreasJoin;
+use backend\models\TasksTagsJoin;
+use common\helpers\ArrayHelper;
 use Yii;
 use backend\models\Tasks;
 use backend\models\TasksSearch;
@@ -71,10 +76,8 @@ class TasksController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-        $modelPhone =  new Phones();
         return $this->render('create', [
-            'model' => $model,
-            'modelPhone' => $modelPhone,
+            'model' => $model
         ]);
     }
 
@@ -91,6 +94,29 @@ class TasksController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+
+        if (!empty($model->sex)) {
+            $model->setAttribute('sex', array_keys(PhoneUsers::getSexArray($model->sex)));
+        }
+
+        if (!empty($model->age)) {
+            $model->setAttribute('age',array_keys(PhoneUsers::getAgeArray($model->age)));
+        }
+
+        $tagsIdList = ArrayHelper::toArray(ArrayHelper::map(TasksTagsJoin::find()->where(['tasks_id' => $model->id])->all(), 'id', 'tags_id'));
+        if (!empty($tagsIdList)) {
+            sort($tagsIdList);
+            $tagsIdList = implode(',', $tagsIdList);
+            $model->setTags($tagsIdList);
+        }
+
+        $areaIdList = ArrayHelper::toArray(ArrayHelper::map(TasksAreasJoin::find()->where(['tasks_id' => $model->id])->all(), 'id', 'areas_id'));
+        if (!empty($areaIdList)) {
+            sort($areaIdList);
+            $areaIdList = implode(',', $areaIdList);
+            $model->setAreas($areaIdList);
         }
 
         return $this->render('update', [

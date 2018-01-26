@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\TasksSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,13 +25,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'title',
-            'info:ntext',
-            'age',
-            'sex',
+//            'info:ntext',
+            [
+                'attribute' => 'age',
+                'format' => function($value){
+                    return \backend\models\PhoneUsers::getAgeView($value);
+                },
+                'filter' => backend\models\PhoneUsers::getAgeList()
+            ],
+            [
+                'attribute' => 'sex',
+                'format' => function($sex){
+                    return \backend\models\PhoneUsers::getSexView($sex);
+                },
+                'filter' => backend\models\PhoneUsers::getSexList()
+            ],
+
             //'send_num',
             //'send_end_num',
             //'phone_num',

@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%phone_users}}".
@@ -20,14 +21,23 @@ class PhoneUsers extends \yii\db\ActiveRecord
     public static function getSexList()
     {
         return [
-            1 => '男', 2 => '女', 3 => '未知'
+            1 => '男', 2 => '女', 4 => '未知'
         ];
+    }
+
+    public static function getSexAll($list = [])
+    {
+        return \common\helpers\ArrayHelper::orEachKey(empty($list) ? array_keys(self::getSexList()) : $list);
+    }
+
+    public static function getAgeAll($list = [])
+    {
+        return \common\helpers\ArrayHelper::orEachKey(empty($list) ? array_keys() : $list);
     }
 
     public static function getAgeList()
     {
         return [
-            0 => '全部',
             1 => '18以下',
             2 => '19-23',
             4 => '24-27',
@@ -128,4 +138,23 @@ class PhoneUsers extends \yii\db\ActiveRecord
 //    }
 
 
+    public static function getAgeView($age){
+        $list = self::getAgeList();
+        return implode(',', \common\helpers\ArrayHelper::orEachKeyArray($age, $list));
+    }
+
+    public static function getSexView($age){
+        $list = self::getSexList();
+        return implode(',', \common\helpers\ArrayHelper::orEachKeyArray($age, $list));
+    }
+
+    public static function getAgeArray($age){
+        $list = self::getAgeList();
+        return  \common\helpers\ArrayHelper::orEachKeyArray($age, $list);
+    }
+
+    public static function getSexArray($age){
+        $list = self::getSexList();
+        return \common\helpers\ArrayHelper::orEachKeyArray($age, $list);
+    }
 }

@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'info')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'age')->checkboxList(\backend\models\PhoneUsers::getAgeList(), [
+    <?= $form->field($model, 'age')->checkboxList(\yii\helpers\ArrayHelper::merge([0 => '全部'],\backend\models\PhoneUsers::getAgeList()), [
         'itemOptions' => [
             'class' => 'tasks-age'
         ]
@@ -30,7 +30,7 @@ use yii\widgets\ActiveForm;
 
 
     <?= $this->render('../tags/view-input', [
-        'model' => $modelPhone,
+        'model' => $model,
         'form' => $form
     ]) ?>
 
@@ -41,7 +41,6 @@ use yii\widgets\ActiveForm;
 
 
     <?= $form->field($model, 'send_num')->textInput(['maxlength' => true, 'value' => 0]) ?>
-
 
     <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
 

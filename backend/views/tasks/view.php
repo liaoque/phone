@@ -31,16 +31,43 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'info:ntext',
-            'age',
-            'sex',
+            [
+                'attribute' => 'age',
+                'format' => function ($age) {
+                    return \backend\models\PhoneUsers::getAgeView($age);
+                },
+            ],
+            [
+                'attribute' => 'sex',
+                'format' => function ($sex) {
+                    return \backend\models\PhoneUsers::getSexView($sex);
+                },
+            ],
             'send_num',
             'send_end_num',
             'phone_num',
             'subtag_num',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format' => [
+                    'datetime',
+                    'datetimeFormat' => 'Y-m-d H:i:s',
+                ]
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => [
+                    'datetime',
+                    'datetimeFormat' => 'Y-m-d H:i:s',
+                ]
+            ],
             'desc',
-            'status',
+            [
+                'attribute' => 'status',
+                'format' => function($value){
+
+                }
+            ]
         ],
     ]) ?>
 

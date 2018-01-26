@@ -130,14 +130,15 @@ class TagsController extends Controller
     }
 
 
-    public function actionList($pid = 0){
+    public function actionList($pid = 0)
+    {
 //      return  ArrayHelper::map(Tags::find()->where(['pid' => intval($pid)])->all(), 'id', 'name');
         Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        if ($ids = Yii::$app->getRequest()->get('idList')) {
+            return Tags::find()->where(['id' => explode(',', $ids)])->all();
+        }
         return Tags::find()->where(['pid' => intval($pid)])->all();
     }
-
-
-
 
 
 }
