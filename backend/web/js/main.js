@@ -242,16 +242,18 @@ $(function () {
 
         function init() {
             var list = getInput();
-            $.getJSON($(divId).data('url'), {idList: list}, function (data) {
-                data.forEach(function (tag) {
-                    addTag({
-                        value: tag.id,
-                        pid: tag.pid,
-                        path: tag.path,
-                        text: tag.name
-                    }, selectorTarRow);
+            if (list){
+                $.getJSON($(divId).data('url'), {idList: list}, function (data) {
+                    data.forEach(function (tag) {
+                        addTag({
+                            value: tag.id,
+                            pid: tag.pid,
+                            path: tag.path,
+                            text: tag.name
+                        }, selectorTarRow);
+                    });
                 });
-            })
+            }
         }
         init();
     }
