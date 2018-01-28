@@ -12,6 +12,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property string $name
  * @property int $pid
+ * @property int $level 等级
  * @property string $path
  */
 class Tags extends \yii\db\ActiveRecord
@@ -30,7 +31,7 @@ class Tags extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'pid'], 'integer'],
+            [['level', 'pid'], 'integer'],
             [['name', 'path'], 'string', 'max' => 255],
         ];
     }
@@ -43,6 +44,7 @@ class Tags extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'level' => '等级',
             'pid' => 'Pid',
             'path' => 'Path',
         ];

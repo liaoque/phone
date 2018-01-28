@@ -51,14 +51,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_at',
                 'format' => [
                     'datetime',
-                    'datetimeFormat' => 'Y-m-d H:i:s',
+                    'datetimeFormat' => 'php:Y-m-d H:i:s',
                 ]
             ],
             [
                 'attribute' => 'updated_at',
                 'format' => [
                     'datetime',
-                    'datetimeFormat' => 'Y-m-d H:i:s',
+                    'datetimeFormat' => 'php:Y-m-d H:i:s',
                 ]
             ],
             'desc',
